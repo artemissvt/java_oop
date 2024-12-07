@@ -19,5 +19,5 @@ def main():
     print("x squared is", square(x))
 
 def square (n):
-    return n *n 
+    return n * n 
 main()
