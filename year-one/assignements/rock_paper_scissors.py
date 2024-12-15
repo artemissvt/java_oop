@@ -1,4 +1,6 @@
 import random
+import csv
+
 objectlist = ['rock','paper','scissors']
 secret = random.choice(objectlist)
 #print(secret)
@@ -15,7 +17,7 @@ for i in (objectlist), True:
         if playerchoice == secret:
             print(f"You both picked {playerchoice}, its a tie.")
         elif secret == 'paper':
-            score=print("You lost!")
+            score=print("You lost.")
         elif secret == 'scissors':
             score=print("You win!")
     elif playerchoice == 'paper':
