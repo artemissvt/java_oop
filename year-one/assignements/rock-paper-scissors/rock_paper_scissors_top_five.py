@@ -21,7 +21,7 @@ for line in lines:
     if (data['player_score']) >= 10:
 
         # We ensure that player is not on player wins and we initialize the
-        if data['player'] not in player_wins: #αρχικοποιηση
+        if data['player'] not in player_wins: 
             player_wins[data['player']] = 0 
         player_wins[data['player']] += 1
 
