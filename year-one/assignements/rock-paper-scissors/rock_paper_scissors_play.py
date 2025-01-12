@@ -1,4 +1,8 @@
 import random
+import datetime
+
+# Get the current date and time
+datetime = datetime.datetime.now()
 
 # We create an object list for the game:
 objectlist = ['rock', 'paper', 'scissors']
@@ -58,7 +62,6 @@ def player_vs_computer(playerchoice, secret, user_score, computer_score):
 while True:
     # We get player's username and choice:
     username = input('Type your username: ')
-    datetime = input('Type the current date and time: ')
     playerchoice = input('Pick rock, paper, or scissors: ').lower()
 
     # Then its computer's turn:
