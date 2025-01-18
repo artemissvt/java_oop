@@ -8,8 +8,10 @@ def generate_usernames_from_csv(file_path):
 
     # Open the CSV file and read its lines
     with open(file_path, 'r') as file:
+
         # Skip the header
         lines = file.readlines()[1:]
+        
         # Extract student names
         students = [line.strip() for line in lines]
 

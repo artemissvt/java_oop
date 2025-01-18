@@ -38,20 +38,29 @@ def login(users):
         password = input("Enter your password: ")
         if users[username] == password:
             print(f"Welcome back, {username}!")
-            return True
+            return username
         else:
             print("Incorrect password.")
-            return False
+            return None
     else:
         # User doesn't exist, offer sign-up
         print(f"Username {username} not found.")
         choice = input("Would you like to sign up (y/n)? ").lower()
         if choice == 'y':
             sign_up(username, users)
-            return True
+            return username
         else:
             print("Goodbye!")
-            return False
+            return None
+
+users = load_users()
+username = login(users)  # Now username stores the logged-in username
+
+if username:
+    print("Starting the game...\n")
+else:
+    print("Login failed, exiting the program.")
+    exit()
 
 
 def sign_up(username, users):
@@ -63,25 +72,6 @@ def sign_up(username, users):
     save_user(username, password)
     users[username] = password
     print(f"Account created for {username}!")
-
-
-def main():
-    # Load existing users from the file
-    users = load_users()
-
-    # Try to log in the player
-    if login(users):
-        # You can proceed with your game here after successful login
-        print("Starting the game...\n")
-        # For example, call the quiz or game function here
-    else:
-        print("Login failed, exiting the program.")
-
-
-if __name__ == "__main__":
-    main()
-
-
 
 # We open the text file with the questions and the answers, and we read the lines:
 file = open('quiz.txt', 'r')
@@ -110,11 +100,11 @@ for line in lines:
 
 # We initialize the question counter:
 question_count = 1
-
+user_cor_ans = 0
 # We ask the player the question:
 for question, answers in quiz_data.items():
     # If the program has printed 5 questions already, break:
-    if question_count >= 5:
+    if question_count >= 6:
         break
     correct_answer = answers['correct_answer']
     wrong_answers = answers['wrong_answers']
@@ -136,10 +126,27 @@ for question, answers in quiz_data.items():
         # Then we check wether the choice player made is correct or not and we print the appropriate message:
         if selected_ans == correct_answer:
             print ("Correct!")
+            user_cor_ans += 1
         elif selected_ans in wrong_answers:
             print (f"Wrong answer! Correct answer was: {correct_answer}")
     else:
         print ("Invalid choice. Please choose from 1-4!")
     question_count += 1
     print("\n")
+    print(user_cor_ans)
+    play_again = input("Do you want to play again?y/n")
+    if play_again == 'y':
+        continue
+    elif play_again == 'n':
+        print("Goodbye.")
+        break
+    else:
+        print("Invalid option, please choose from y/n")
 
+def append_scores_to_file(username, user_cor_ans, filename="player_scores.txt"):
+    """Appends the player's username and score to a different file."""
+    with open(filename, "a") as file:
+        file.write(f"{username}, {user_cor_ans}\n")
+
+# After the quiz is done, append the score
+append_scores_to_file(username, user_cor_ans)
