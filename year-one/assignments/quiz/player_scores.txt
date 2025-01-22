@@ -2,3 +2,5 @@
 art, 0
 art, 2
 art, 1
+test, 2
+test, 2

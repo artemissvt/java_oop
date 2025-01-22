@@ -23,6 +23,16 @@ def save_user(username, password, filename="users.txt"):
         file.write(f"{username},{password}\n")
 
 
+def sign_up(username, users):
+    """
+    Signs up a new user by adding their username and password to the file.
+    """
+    password = input("Enter a password: ")
+    # Save the new user to the file
+    save_user(username, password)
+    users[username] = password
+    print(f"Account created for {username}!") 
+    
 def login(users):
     """
     Attempts to log in a user. If the user doesn't exist, offer sign-up.
@@ -63,15 +73,6 @@ else:
     exit()
 
 
-def sign_up(username, users):
-    """
-    Signs up a new user by adding their username and password to the file.
-    """
-    password = input("Enter a password: ")
-    # Save the new user to the file
-    save_user(username, password)
-    users[username] = password
-    print(f"Account created for {username}!")
 
 # We open the text file with the questions and the answers, and we read the lines:
 file = open('quiz.txt', 'r')
@@ -133,15 +134,15 @@ for question, answers in quiz_data.items():
         print ("Invalid choice. Please choose from 1-4!")
     question_count += 1
     print("\n")
-    print(user_cor_ans)
-    play_again = input("Do you want to play again?y/n")
+    print("Your score is: ", user_cor_ans)
+    play_again = input("Do you want to play again?y/n: ")
     if play_again == 'y':
         continue
     elif play_again == 'n':
         print("Goodbye.")
         break
     else:
-        print("Invalid option, please choose from y/n")
+        print("Invalid option, please choose from y/n: ")
 
 def append_scores_to_file(username, user_cor_ans, filename="player_scores.txt"):
     """Appends the player's username and score to a different file."""
