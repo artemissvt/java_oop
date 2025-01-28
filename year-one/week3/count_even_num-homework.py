@@ -5,5 +5,5 @@ for num in random_numbers:
     if num % 2 != 0:
         odd_nums += 1
 print ('Random numbers:', random_numbers)
-print ('Odd numbers:', odd_nums)
+print ('Even numbers:', odd_nums)
 
