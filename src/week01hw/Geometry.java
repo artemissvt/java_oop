@@ -1,6 +1,5 @@
-package wk1;
+package week01hw;
 
-import java.awt.*;
 import java.util.Scanner;
 
 public class Geometry {

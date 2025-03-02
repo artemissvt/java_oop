@@ -1,4 +1,4 @@
-package wk1;
+package week01hw;
 
 class Pet {
     String species;

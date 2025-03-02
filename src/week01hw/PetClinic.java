@@ -1,6 +1,4 @@
-package wk1;
-
-import org.w3c.dom.ls.LSOutput;
+package week01hw;
 
 import java.util.Scanner;
 
@@ -21,7 +19,7 @@ public class PetClinic {
         pets[9] = new Pet("bird", "Bonnie");
 
         Scanner in = new Scanner(System.in);
-        System.out.println("Type the specie of the animal you want to check (make sure you type the species in lowercase and in singular: ");
+        System.out.println("Type the specie of the animal you want to check: ");
         String specieType = in.nextLine();
         //System.out.println("Specie type: " + specieType);
 
