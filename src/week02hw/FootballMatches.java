@@ -1,38 +1,50 @@
 package week02hw;
 
 public class FootballMatches {
-    private String teamName;
-    private int teamWins;
-    private int teamLosses;
-    private int teamDraws;
-    private boolean teamWon;
+    private int matchId;
+    private String homeTeam;
+    private String awayTeam;
+    private int homeTeamScore;
+    private int awayTeamScore;
 
-    public FootballMatches(String teamName, int teamWins, int teamLosses, int teamDraws) {
-        this.teamName = teamName;
-        this.teamWins = teamWins;
-        this.teamLosses = teamLosses;
-        this.teamDraws = teamDraws;
-        this.teamWon = false;
+
+    public FootballMatches(int matchId, String homeTeam, String awayTeam, int homeTeamScore, int awayTeamScore) {
+        this.matchId = matchId;
+        this.homeTeam = homeTeam;
+        this.awayTeam = awayTeam;
+        this.homeTeamScore = homeTeamScore;
+        this.awayTeamScore = awayTeamScore;
     }
 
-    public void wins(){
-        this.teamWon = true;
-    }
-
-    /*public boolean isTeamWon(){
-        return teamWon;
-    }*/
-
-    public String getTeamName() {
-        return teamName;
-    }
 
     public String toString() {
-        return teamName + ", team wins: " + teamWins + ", team losses: " + teamLosses + ", team draws: " + teamDraws;
+        return "Match ID: " + matchId + "\n" + "Home Team: " + homeTeam + "\n" + "Away Team: " + awayTeam + "\n" + "Score: " + homeTeamScore + " - " + awayTeamScore + "\n";
     }
 
+    // JUST FOR TESTING
     public static void main(String[] args) {
-        FootballMatches request = new FootballMatches("Milan", 1, 2, 2);
-        System.out.println(request);
+        FootballMatches a = new FootballMatches(1, "Manchester United", "Tottenham", 2, 3);
+        System.out.println(a);
     }
+
+    public int getMatchId() {
+        return matchId;
+    }
+
+    public String getHomeTeam() {
+        return homeTeam;
+    }
+
+    public String getAwayTeam() {
+        return awayTeam;
+    }
+
+    public int getHomeScore() {
+        return homeTeamScore;
+    }
+
+    public int getAwayScore() {
+        return awayTeamScore;
+    }
+
 }

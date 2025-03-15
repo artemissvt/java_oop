@@ -17,19 +17,35 @@ public class FootballMenu {
             System.out.println("Enter your choice -->");
             choice = input.nextInt();
 
+
             switch (choice) {
                 case 1:
-                    for (int i = 0; i < 2; i++) {
-                        System.out.println("Please type" + (i+1) + " team name: " );
-                        String teamName = input.next();
-                        input.nextLine();
-
-                        System.out.println("Please type" + teamName + " goals scored: ");
-                        int goals = input.nextInt();
-                        input.nextLine();
-
-                    }
-            }
+                    System.out.println("Enter the match id: ");
+                    int matchId = input.nextInt();
+                    input.nextLine();
+                    System.out.println("Enter the name of the Home Team: ");
+                    String homeTeam = input.next();
+                    input.nextLine();
+                    System.out.println("Enter the name of the Away Team: ");
+                    String awayTeam = input.next();
+                    input.nextLine();
+                    System.out.println("Enter the goals scored by the Home Team: ");
+                    int homeTeamScore = input.nextInt();
+                    input.nextLine();
+                    System.out.println("Enter the goals scored by the Away Team: ");
+                    int awayTeamScore = input.nextInt();
+                    matchList.addFootballMatches(matchId, homeTeam, awayTeam, homeTeamScore, awayTeamScore);
+                    break;
+                case 2:
+                    System.out.println("Enter the name of the team you want to search: ");
+                    input.nextLine();
+                    String teamName = input.nextLine();
+                    matchList.teamPerformance(teamName);
+                    break;
+                case 0:
+                    System.out.println("Goodbye");
+                    break;
+            } break;
         } while (choice !=0);
     }
 }
