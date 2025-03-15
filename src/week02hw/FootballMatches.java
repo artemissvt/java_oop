@@ -1,4 +1,4 @@
-package week03hw;
+package week02hw;
 
 public class FootballMatches {
     private String teamName;
