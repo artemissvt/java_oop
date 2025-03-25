@@ -35,10 +35,16 @@ public class CoffeeShopMenu {
                     readOrder.searchOrdersByDate(datel);
                     break;
                 case 3:
-                    System.out.println("Type the name of the customer you want the amount of: ");
-                    String namec = input.nextLine();
-                    input.nextLine();
-                    readOrder.viewTotalAmountByCustomer(namec);
+                    System.out.println("Do you want to search the csv files or the database for this info? Please choose database/csv: ");
+                    String preference2 = input.nextLine();
+                    switch (preference2) {
+                        case "csv":
+                            System.out.println("Type the name of the customer you want the amount of: ");
+                            String namec = input.nextLine();
+                            input.nextLine();
+                            readOrder.viewTotalAmountByCustomer(namec);
+                    }
+
 
             } break;
         } while (choice != 0);

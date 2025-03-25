@@ -72,7 +72,7 @@ public class ReadOrder {
             }
         }
         if (found) {
-            System.out.println(name + " has spent a total of $" + total);
+            System.out.println(name + " has spent a total of €" + total);
         } else {
             System.out.println("No orders found for this customer.");
         }
