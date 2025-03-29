@@ -11,10 +11,10 @@ public class Grocery extends Products {
     }
 
     public String toStringPrinted() {
-        return "Product's weight in kg: " + productWeightKg + ", Products expiration date: " + expirationDate;
+        return ", grocery, " + productWeightKg + ", " + expirationDate;
     }
 
-    public String toString() {
-        return super.toString() + "\n" + toStringPrinted();
+    public String toCSV() {
+        return super.toCSV() + toStringPrinted();
     }
 }

@@ -11,9 +11,9 @@ public class Electronics extends Products {
     }
 
     public String toStringPrinted() {
-        return "Product Name: " + productName + "Product's warranty period (years): " + warrantyYears;
+        return ", electronics, " + brandName + ", " + warrantyYears;
     }
-    public String toString() {
-        return super.toString() + toStringPrinted();
+    public String toCSV() {
+        return super.toCSV() + toStringPrinted();
     }
 }

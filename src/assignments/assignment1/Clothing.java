@@ -13,10 +13,10 @@ public class Clothing extends Products{
     }
 
     public String toStringPrinted() {
-        return "Product size: " + size + "Product color: " + color + "Product material: " + material;
+        return ", clothing, " + size + ", " + color + ", " + material;
     }
 
-    public String toString() {
-        return super.toString() + toStringPrinted();
+    public String toCSV() {
+        return super.toCSV() + toStringPrinted();
     }
 }
