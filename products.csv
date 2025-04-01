@@ -1,6 +1,7 @@
 1, shirt, 25.0, clothing, medium, color, cotton
-2, fridge, 300.0, electronics, miele, 3
-3, shirt, 30.0, clothing, large, blue, silk
-4, shirt, 35.0, clothing, small, white, cotton
-5, apples, 5.0, grocery, 1.0, 2025-07-01
-6, fridge, 350.0, electronics, pitsos, 5
+2, fridge, 350.0, electronics, miele, 3
+3, shirt, 30.0, clothing, green, blue, silk
+4, jeans, 35.0, clothing, small, white, cotton
+5, apples, 5.0, 2, 1.0, 2025-07-01
+6, fridge, 360.0, electronics, pitsos, 5
+7, pears, 3.0, grocery, 1.0, 2025-06-01

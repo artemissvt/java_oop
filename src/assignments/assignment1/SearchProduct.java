@@ -18,10 +18,10 @@ public class SearchProduct {
                     if (parts[3].equals("electronics")) {
                         System.out.println("Product ID: " + parts[0] + ", Product: " + parts[1] + ", Price: " + parts[2] + "€, Brand name: " + parts[4] + ", Warranty period in years: " + parts[5]);
                         found = true;
-                    } else if (parts[2].equals("clothing")) {
+                    } else if (parts[3].equals("clothing")) {
                         System.out.println("Product ID: " + parts[0] + ", Product: " + parts[1] + ", Price: " + parts[2] + "€, Size: " + parts[4] + ", Color: " + parts[5] + ", Material: " + parts[6]);
                         found = true;
-                    } else if (parts[2].equals("grocery")) {
+                    } else if (parts[3].equals("grocery")) {
                         System.out.println("Product ID: " + parts[0] + ", Product: " + parts[1] + ", Price per kg: " + parts[2] + "€, Weight in kg: " + parts[4] + ", Expiration date(YYYY-MM-DD): " + parts[5]);
                         found = true;
                     }
@@ -32,7 +32,7 @@ public class SearchProduct {
             }
             scanner.close();
         } catch (FileNotFoundException e) {
-            System.out.println(filePath);
+            System.out.println(e.getMessage());
         }
     }
 

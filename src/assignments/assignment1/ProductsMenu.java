@@ -31,7 +31,20 @@ public class ProductsMenu {
                     AddProduct.addProduct(filePath);
                     break;
                 case 3:
-                    ModifyProduct.modifyProduct(filePath);
+                    System.out.println("Type the kind of product you want to modify (electronics, grocery, clothing): ");
+                    String kind = input.nextLine();
+
+                    switch (kind) {
+                        case "electronics":
+                            ModifyProductElectronics.modifyProductElectronics(filePath);
+                            break;
+                        case "grocery":
+                            ModifyProductGrocery.modifyProductGrocery(filePath);
+                            break;
+                        case "clothing":
+                            ModifyProductClothing.modifyProductClothing(filePath);
+                            break;
+                    }
                     break;
             } break;
         } while (choice != 0);
