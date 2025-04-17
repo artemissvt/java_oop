@@ -25,6 +25,7 @@ public class PreschoolTraining {
                 JLabel ruletwo = new JLabel("There is one picture for each letter of the alphabet");
                 JButton clicktostart = new JButton("Click here to start");
 
+                window.add(centerPanel, BorderLayout.CENTER);
                 centerPanel.add(newlabel);
                 centerPanel.add(ruleone);
                 centerPanel.add(ruletwo);
@@ -35,6 +36,7 @@ public class PreschoolTraining {
                 centerPanel.repaint();
 
                 JLabel newlabel2 = new JLabel();
+                JLabel resultlabel = new JLabel();
 
                 clicktostart.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
@@ -44,13 +46,50 @@ public class PreschoolTraining {
 
                         ImageIcon image = new ImageIcon("images/ant.jpg");
                         newlabel2.setIcon(image);
+                        newlabel2.setAlignmentX(Component.CENTER_ALIGNMENT);
                         centerPanel.add(newlabel2);
 
                         JTextField nameField = new JTextField(15);
+                        nameField.setAlignmentX(Component.CENTER_ALIGNMENT);
                         centerPanel.add(nameField);
 
+                        JButton checkanswer = new JButton("Check answer");
+                        checkanswer.setAlignmentX(Component.CENTER_ALIGNMENT);
+                        centerPanel.add(checkanswer);
+
+                        resultlabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                        centerPanel.add(resultlabel);
+
+                        checkanswer.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent e) {
+                                if (nameField.getText().toLowerCase().equals("a")) {
+                                    resultlabel.setText("Correct!");
+                                } else {
+                                    resultlabel.setText("Wrong!");
+                                }
+                                JButton continuebutton = new JButton("Continue");
+                                continuebutton.setAlignmentX(Component.CENTER_ALIGNMENT);
+                                centerPanel.add(continuebutton, BorderLayout.SOUTH);
+                                continuebutton.addActionListener(new ActionListener() {
+                                    public void actionPerformed(ActionEvent e) {
+                                        centerPanel.remove(resultlabel);
+                                        centerPanel.remove(checkanswer);
+                                        centerPanel.remove(continuebutton);
+
+                                        centerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+                                        ImageIcon image = new ImageIcon("images/horse.jpg");
+                                        newlabel2.setIcon(image);
+                                        newlabel2.setAlignmentX(Component.CENTER_ALIGNMENT);
+                                        centerPanel.add(newlabel2);
+                                        JTextField nameField = new JTextField(15);
+                                    }
+                                });
+                            }
+                        });
                         centerPanel.revalidate();
                         centerPanel.repaint();
+
+
                     }
                 });
             }
