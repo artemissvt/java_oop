@@ -6,12 +6,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Hangman {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Hangman");
+
+        frame.setLayout(new BorderLayout());
 
         JPanel entirePanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -64,15 +67,76 @@ public class Hangman {
                 passwordField.setMaximumSize(new Dimension(200, 30));
                 loginPanel.add(Box.createRigidArea(new Dimension(0, 10)));
                 passwordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
                 JButton submitBtn = new JButton("Submit");
                 loginPanel.add(submitBtn);
+
                 submitBtn.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        frame.getContentPane().removeAll();
-                        frame.repaint();
-                        frame.revalidate();
+                        String inputUsername = usernameField.getText();
+                        String inputPassword = new String(passwordField.getPassword());
+                        if (inputUsername.isEmpty() || inputPassword.isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "Please enter a valid username/password");
+                        } else {
+                            try {
+                                Connection conn = LogIn.getConnection();
+                                String query = "SELECT UserPassword FROM userinfo WHERE Username = ?";
+                                PreparedStatement q = conn.prepareStatement(query);
+                                q.setString(1, inputUsername);
+                                ResultSet rs = q.executeQuery();
 
+                                if (rs.next()) {
+                                    String dbPassword = rs.getString("UserPassword");
+                                    if (dbPassword.equals(inputPassword)) {
+                                        JDialog dialog = new JDialog(frame, "Login", true);
+                                        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+                                        JPanel dialogPanel = new JPanel();
+                                        dialogPanel.setLayout(new BoxLayout(dialogPanel, BoxLayout.Y_AXIS));
+                                        dialogPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+                                        JLabel messageLabel = new JLabel("You're successfully logged in");
+                                        messageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                                        dialogPanel.add(messageLabel);
+
+                                        dialogPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+                                        JButton continueButton = new JButton("Continue");
+                                        continueButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+                                        dialogPanel.add(continueButton);
+
+                                        continueButton.addActionListener(new ActionListener() {
+                                            public void actionPerformed(ActionEvent e) {
+                                                dialog.dispose();
+
+                                                frame.getContentPane().removeAll();
+                                                frame.repaint();
+                                                frame.revalidate();
+
+                                                JPanel gamePanel = new JPanel();
+                                                gamePanel.add(new JLabel("Game starts here!"));
+                                                frame.add(gamePanel);
+                                                frame.revalidate();
+                                                frame.repaint();
+                                            }
+                                        });
+
+                                        dialog.getContentPane().add(dialogPanel);
+                                        dialog.pack();
+                                        dialog.setLocationRelativeTo(frame);
+                                        dialog.setVisible(true);
+                                    } else {
+                                        JOptionPane.showMessageDialog(null, "Wrong password");
+                                    }
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "User not found");
+                                }
+                                rs.close();
+                                q.close();
+                                conn.close();
+                            } catch (SQLException se) {
+                                System.out.println(se.getMessage());
+                            }
+                        }
                     }
                 });
 
@@ -110,53 +174,93 @@ public class Hangman {
 
                 JButton submitBtn = new JButton("Submit");
                 signupPanel.add(submitBtn);
+
+                frame.add(signupPanel);
+                frame.revalidate();
+                frame.repaint();
+
                 submitBtn.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         frame.getContentPane().removeAll();
                         frame.repaint();
                         frame.revalidate();
+                        String inputUsername = usernameField.getText();
                         try {
+
                             Connection conn = LogIn.getConnection();
-                            String Username = usernameField.getText();
-                            String UserPassword = passwordField.getText();
+                            String query = "SELECT UserPassword FROM userinfo WHERE Username = ?";
+                            PreparedStatement q = conn.prepareStatement(query);
+                            q.setString(1, inputUsername);
+                            ResultSet rs = q.executeQuery();
+                            if (rs.next()) {
+                                JOptionPane.showMessageDialog(null, "This username already exists");
+                            } else {
+                                try {
+                                    String Username = usernameField.getText();
+                                    String UserPassword = passwordField.getText();
 
-                            String query = "INSERT INTO userinfo (Username, UserPassword) VALUES (?,?)";
-                            PreparedStatement ps = conn.prepareStatement(query);
-                            ps.setString(1, Username);
-                            ps.setString(2, UserPassword);
-                            ps.executeUpdate();
-                            System.out.println("done");
+                                    String query2 = "INSERT INTO userinfo (Username, UserPassword) VALUES (?,?)";
+                                    PreparedStatement ps = conn.prepareStatement(query2);
+                                    ps.setString(1, Username);
+                                    ps.setString(2, UserPassword);
+                                    ps.executeUpdate();
 
+                                    JDialog dialog = new JDialog(frame, "Sign up", true);
+                                    dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+                                    JPanel dialogPanel = new JPanel();
+                                    dialogPanel.setLayout(new BoxLayout(dialogPanel, BoxLayout.Y_AXIS));
+                                    dialogPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+                                    JLabel messageLabel = new JLabel("You're successfully signed up");
+                                    messageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                                    dialogPanel.add(messageLabel);
+
+                                    dialogPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+                                    JButton continueButton = new JButton("Continue");
+                                    continueButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+                                    dialogPanel.add(continueButton);
+
+                                    continueButton.addActionListener(new ActionListener() {
+                                        public void actionPerformed(ActionEvent e) {
+                                            dialog.dispose();
+
+                                            frame.getContentPane().removeAll();
+                                            frame.repaint();
+                                            frame.revalidate();
+
+                                            JPanel gamePanel = new JPanel();
+                                            gamePanel.add(new JLabel("Game starts here!"));
+
+                                            frame.getContentPane().removeAll();
+                                            frame.add(gamePanel, BorderLayout.CENTER);
+                                            frame.revalidate();
+                                            frame.repaint();
+
+                                        }
+                                    });
+
+                                    dialog.getContentPane().add(dialogPanel);
+                                    dialog.pack();
+                                    dialog.setLocationRelativeTo(frame);
+                                    dialog.setVisible(true);
+
+                                } catch (SQLException se) {
+                                    System.out.println(se.getMessage());
+                                }
+                            }
                         } catch (SQLException se) {
                             System.out.println(se.getMessage());
                         }
+
+                        frame.add(signupPanel);
+                        frame.revalidate();
+                        frame.repaint();
                     }
                 });
-
-                frame.add(signupPanel);
-                frame.revalidate();
-                frame.repaint();
             }
         });
-        /*try {
-            Connection conn = LogIn.getConnection();
-            Scanner scanner = new Scanner(System.in);
-            System.out.print("Username: ");
-            String Username = scanner.nextLine();
-            System.out.print("Password: ");
-            String UserPassword = scanner.nextLine();
-
-            String query = "INSERT INTO userinfo (Username, UserPassword) VALUES (?,?)";
-            PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, Username);
-            ps.setString(2, UserPassword);
-            ps.executeUpdate();
-            System.out.println("done");
-
-        } catch (SQLException se) {
-            System.out.println(se.getMessage());
-        }*/
-
         entirePanel.add(centerPanel, gbc);
         frame.add(entirePanel);
 
@@ -165,3 +269,4 @@ public class Hangman {
         frame.setVisible(true);
     }
 }
+
