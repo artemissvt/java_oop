@@ -114,6 +114,7 @@ public class Hangman {
 
                                                 JPanel gamePanel = new JPanel();
                                                 gamePanel.add(new JLabel("Game starts here!"));
+
                                                 frame.add(gamePanel);
                                                 frame.revalidate();
                                                 frame.repaint();
