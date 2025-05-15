@@ -1,5 +1,6 @@
 package assignments.assignment2;
 
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,9 +11,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-public class Hangman {
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Hangman");
+public class WelcomeWindow {
+    public static void showWelcomeWindow(JFrame frame) {
+        frame.getContentPane().removeAll();
+        frame.repaint();
+        frame.revalidate();
 
         frame.setLayout(new BorderLayout());
 
@@ -112,24 +115,10 @@ public class Hangman {
                                                 frame.repaint();
                                                 frame.revalidate();
 
-                                                int userID = -1;
-                                                try  (Connection conn = LogIn.getConnection();
-                                                    PreparedStatement q = conn.prepareStatement("SELECT UserID FROM userinfo WHERE Username = ? AND UserPassword = ?")) {
-                                                    q.setString(1, inputUsername);
-                                                    q.setString(2, inputPassword);
-                                                    ResultSet rs = q.executeQuery();
+                                                JPanel gamePanel = new JPanel();
+                                                gamePanel.add(new JLabel("Game starts here!"));
 
-                                                    if (rs.next()) {
-                                                        userID = rs.getInt("UserID");
-                                                    }
-                                                } catch (SQLException se) {
-                                                    System.out.println(se.getMessage());
-                                                }
-
-                                                if (userID > 0) {
-                                                    HangmanGame.showHangmanGame(frame);
-                                                }
-
+                                                frame.add(gamePanel);
                                                 frame.revalidate();
                                                 frame.repaint();
                                             }
@@ -237,12 +226,22 @@ public class Hangman {
                                     continueButton.setAlignmentX(Component.CENTER_ALIGNMENT);
                                     dialogPanel.add(continueButton);
 
-
                                     continueButton.addActionListener(new ActionListener() {
                                         public void actionPerformed(ActionEvent e) {
                                             dialog.dispose();
 
-                                            WelcomeWindow.showWelcomeWindow(frame);
+                                            frame.getContentPane().removeAll();
+                                            frame.repaint();
+                                            frame.revalidate();
+
+                                            JPanel gamePanel = new JPanel();
+                                            gamePanel.add(new JLabel("Game starts here!"));
+
+                                            frame.getContentPane().removeAll();
+                                            frame.add(gamePanel, BorderLayout.CENTER);
+                                            frame.revalidate();
+                                            frame.repaint();
+
                                         }
                                     });
 
