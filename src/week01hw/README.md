@@ -7,3 +7,14 @@ Difficulties: At first i had some trouble understanding the for loops and how to
 
 
 ![image](https://github.com/user-attachments/assets/918b3087-abd7-43f7-a393-4ae4448c852f)
+
+2) Car.java description: You are working for an application of a Car Rental business. This business has a fleet of 
+cars. For each car they keep the plate number, the model, the number of kilometers 
+(km), and if it is rented or not. 
+Difficulties: At first I had some trouble understanding how the variable declaration works, but after i got that the program was relatively easy to fix
+
+
+
+
+![image](https://github.com/user-attachments/assets/61e67fd7-e8e5-4ce5-9695-d9a19d4247fc)
+
