@@ -3,6 +3,7 @@ All books have an ISBN code, a title, price, and the author.
 Printed: Can be hardcover or paperback - Number of pages - publisher - available copies
 Digital: Size in kb
 Audiobook: Duration in minutes - Narrator
+
 Difficulties: At first I found it difficult to understand inheritance but when I understood that I moved on pretty easily.
 
 
