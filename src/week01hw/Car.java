@@ -1,6 +1,8 @@
 package week01hw;
 
 public class Car {
+
+    // we create the variables fro this program
     String carplatenum;
     String carmodel;
     int carkm;

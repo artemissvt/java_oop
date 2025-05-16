@@ -6,7 +6,7 @@ public class PetClinic {
     public static void main(String[] args) {
         Pet[] pets = new Pet[10];
 
-        // Assign pet objects manually
+        // create a pet array
         pets[0] = new Pet("dog", "Pluto");
         pets[1] = new Pet("cat", "Whiskers");
         pets[2] = new Pet("bird", "Tweety");
@@ -18,14 +18,15 @@ public class PetClinic {
         pets[8] = new Pet("cat", "Lila");
         pets[9] = new Pet("bird", "Bonnie");
 
+        // variable to search pet by specie
         Scanner in = new Scanner(System.in);
         System.out.println("Type the specie of the animal you want to check: ");
         String specieType = in.nextLine();
-        //System.out.println("Specie type: " + specieType);
 
         int count = 0;
         String petNames = "";
 
+        // count how many oets are there
         for (int i = 0; i < pets.length; i++) {
             if (pets[i].species.equalsIgnoreCase(specieType)) {
                 count++;

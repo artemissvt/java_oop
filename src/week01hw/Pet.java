@@ -1,6 +1,8 @@
 package week01hw;
 
 class Pet {
+
+    // declare the variables
     String species;
     String name;
 

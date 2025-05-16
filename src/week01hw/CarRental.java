@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 public class CarRental {
     public static void main(String[] args) {
+
+        // we create a list for the cars contained on the car rental
         Car[] cars = new Car[5];
         cars[0] = new Car("YZN4261","volkswagen golf", 50000, false);
         cars[1] = new Car("ZAN7859", "opel astra gtc", 30000, true);
@@ -14,6 +16,7 @@ public class CarRental {
         Scanner in = new Scanner(System.in);
         int choice = 0;
 
+        // we create the menu of the possible options the user has
         System.out.println("Welcome to the Car Rental. Please choose one of the following options: ");
         System.out.println("1. Rent a car");
         System.out.println("2. Return a car");
@@ -22,13 +25,15 @@ public class CarRental {
         System.out.println("Choose a number: ");
         choice = in.nextInt();
 
-        //String carChoice = "";
         switch (choice) {
+
+            // first option is rent a car
             case 1:
                 Scanner in1 = new Scanner(System.in);
                 System.out.println("Please enter the plate number of the car you want to rent: ");
                 String carChoice = in1.nextLine();
 
+                // usign a for loop to check car plate number
                 for (int i = 0; i < cars.length; i++) {
                     if (cars[i].carplatenum.equalsIgnoreCase(carChoice)) {
                         carChoice += cars[i].carplatenum + "\n";
@@ -53,10 +58,14 @@ public class CarRental {
                         }
                     }
                 }
+
+            // second option is return a car
             case 2:
                 Scanner in3 = new Scanner(System.in);
                 System.out.println("Please enter the plate number of the car you want to return: ");
                 String carReturn = in3.nextLine();
+
+                // again a for loop to check for the plate's number
                 for (int i = 0; i < cars.length; i++) {
                     if (cars[i].carplatenum.equalsIgnoreCase(carReturn)) {
                         carReturn += cars[i].carplatenum + "\n";
@@ -82,6 +91,8 @@ public class CarRental {
                         }
                     }
                 }
+
+            // third option is display all of the cars
             case 3:
                 System.out.println("Catalogue with all of the cars: ");
                 for (int i = 0; i < cars.length; i++) {
@@ -90,13 +101,11 @@ public class CarRental {
                             "plate number: " + cars[i].carplatenum + ", " +
                             "kilometres: " + cars[i].carkm + ", "+
                             "available: " + (cars[i].carstatus ? "Yes" : "No"));
-
                 }
 
+            // forth option is exit
             case 4:
                 System.out.println("Exiting.");
         }
-
     }
-
 }
