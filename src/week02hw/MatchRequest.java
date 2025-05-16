@@ -40,7 +40,7 @@ public class MatchRequest {
         System.out.println("Wins: " + wins + "\n" + "Losses: " + losses + "\n" + "Draws: " + draws);
     }
 
-    // JUST FOR TESTING
+    // main function to test
     public static void main(String[] args) {
         MatchRequest orderList = new MatchRequest();
         orderList.addFootballMatches(1, "Manchester United", "Tottenham", 2, 3);

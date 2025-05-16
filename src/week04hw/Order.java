@@ -1,6 +1,8 @@
 package week04hw;
 
 public class Order {
+
+    // initialize variables
     String name;
     double price;
     String date;

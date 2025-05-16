@@ -1,6 +1,8 @@
 package week03hw;
 
 public class Book {
+
+    // variable declaration
     protected int ISBN;
     protected String title;
     protected String author;

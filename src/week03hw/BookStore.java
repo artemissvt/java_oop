@@ -1,6 +1,8 @@
 package week03hw;
 
 public class BookStore {
+
+    // i used inheritance for the books
     public static void main(String[] args) {
         BookList books = new BookList();
 

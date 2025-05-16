@@ -1,6 +1,8 @@
 package week02hw;
 
 public class FootballMatches {
+
+    // declare the variables
     private int matchId;
     private String homeTeam;
     private String awayTeam;
@@ -21,7 +23,7 @@ public class FootballMatches {
         return "Match ID: " + matchId + "\n" + "Home Team: " + homeTeam + "\n" + "Away Team: " + awayTeam + "\n" + "Score: " + homeTeamScore + " - " + awayTeamScore + "\n";
     }
 
-    // JUST FOR TESTING
+    // main function for testing
     public static void main(String[] args) {
         FootballMatches a = new FootballMatches(1, "Manchester United", "Tottenham", 2, 3);
         System.out.println(a);
