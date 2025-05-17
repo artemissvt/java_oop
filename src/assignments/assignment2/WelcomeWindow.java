@@ -40,6 +40,9 @@ public class WelcomeWindow {
         JPanel buttonPanel = new JPanel();
         JButton signupbtn = new JButton("Sign up");
         JButton loginbtn = new JButton("Log in");
+        JButton leaderboard = new JButton("View Leaderboard");
+
+        buttonPanel.add(leaderboard);
         buttonPanel.add(signupbtn);
         buttonPanel.add(loginbtn);
         centerPanel.add(buttonPanel);
@@ -90,6 +93,20 @@ public class WelcomeWindow {
                                 if (rs.next()) {
                                     String dbPassword = rs.getString("UserPassword");
                                     if (dbPassword.equals(inputPassword)) {
+
+                                        Session.setCurrentUsername(inputUsername);
+
+                                        String userIdQuery = "SELECT UserID FROM userinfo WHERE Username = ?";
+                                        PreparedStatement idStmt = conn.prepareStatement(userIdQuery);
+                                        idStmt.setString(1, inputUsername);
+                                        ResultSet idRs = idStmt.executeQuery();
+                                        if (idRs.next()) {
+                                            Session.setCurrentUserID(idRs.getInt("UserID"));
+                                        }
+                                        idRs.close();
+                                        idStmt.close();
+
+
                                         JDialog dialog = new JDialog(frame, "Login", true);
                                         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
@@ -134,9 +151,7 @@ public class WelcomeWindow {
                                 } else {
                                     JOptionPane.showMessageDialog(null, "User not found");
                                 }
-                                rs.close();
-                                q.close();
-                                conn.close();
+
                             } catch (SQLException se) {
                                 System.out.println(se.getMessage());
                             }
@@ -220,6 +235,34 @@ public class WelcomeWindow {
                                     messageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
                                     dialogPanel.add(messageLabel);
 
+                                    String querygetid = "SELECT UserID FROM userinfo WHERE Username = ?";
+                                    PreparedStatement getidStmt = conn.prepareStatement(querygetid);
+                                    getidStmt.setString(1, Username);
+                                    ResultSet idRs = getidStmt.executeQuery();
+
+                                    int userID = -1;
+                                    if (idRs.next()) {
+                                        userID = idRs.getInt("UserID");
+                                    }
+                                    idRs.close();
+                                    getidStmt.close();
+
+                                    if (userID != -1) {
+                                        String query3 = "INSERT INTO userscore (UserWins, UserLosses, UserID) VALUES (0, 0, ?)";
+                                        PreparedStatement q3 = conn.prepareStatement(query3);
+                                        q3.setInt(1, userID);
+                                        q3.executeUpdate();
+                                        q3.close();
+                                    }
+
+
+
+                                    String query3 = "INSERT INTO userscore (UserWins, UserLosses, UserID) VALUES (0,0,?)";
+                                    PreparedStatement q3 = conn.prepareStatement(query3);
+                                    ps.setString(1, "0");
+                                    ps.setString(2, "0");
+                                    q3.executeUpdate();
+
                                     dialogPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
                                     JButton continueButton = new JButton("Return to start page for log in");
@@ -265,6 +308,74 @@ public class WelcomeWindow {
                 });
             }
         });
+
+        leaderboard.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.getContentPane().removeAll();
+                frame.repaint();
+                frame.revalidate();
+
+                JPanel leaderboardPanel = new JPanel();
+                leaderboardPanel.setLayout(new BoxLayout(leaderboardPanel, BoxLayout.Y_AXIS));
+                leaderboardPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+                leaderboardPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+                JLabel title = new JLabel("Leaderboard - top five players");
+                title.setAlignmentX(Component.CENTER_ALIGNMENT);
+                leaderboardPanel.add(title);
+                leaderboardPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+                try {
+                    Connection conn = LogIn.getConnection();
+                    String sql = "SELECT ui.Username, us.UserWins, us.UserLosses " +
+                            "FROM userscore us " +
+                            "JOIN userinfo ui ON us.UserID = ui.UserID " +
+                            "ORDER BY us.UserWins DESC, us.UserLosses ASC " +
+                            "LIMIT 5";
+                    PreparedStatement stmt = conn.prepareStatement(sql);
+                    ResultSet rs = stmt.executeQuery();
+
+                    while (rs.next()) {
+                        JPanel userPanel = new JPanel();
+                        userPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 5));
+
+                        String username = rs.getString("Username");
+                        int wins = rs.getInt("UserWins");
+                        int losses = rs.getInt("UserLosses");
+
+
+                        JLabel usernameLabel = new JLabel("Username: " + username);
+                        JLabel winsLabel = new JLabel("Wins: " + wins);
+                        JLabel lossesLabel = new JLabel("Losses: " + losses);
+
+                        userPanel.add(usernameLabel);
+                        userPanel.add(winsLabel);
+                        userPanel.add(lossesLabel);
+
+                        leaderboardPanel.add(userPanel);
+                        leaderboardPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+                    }
+                } catch (SQLException se) {
+                    System.out.println(se.getMessage());
+                }
+
+                JButton backBtn = new JButton("Back");
+                backBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+                leaderboardPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+                leaderboardPanel.add(backBtn);
+
+                backBtn.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        WelcomeWindow.showWelcomeWindow(frame);
+                    }
+                });
+                frame.add(leaderboardPanel, BorderLayout.CENTER);
+                frame.revalidate();
+                frame.repaint();
+
+            }
+        });
         entirePanel.add(centerPanel, gbc);
         frame.add(entirePanel);
 
@@ -272,5 +383,27 @@ public class WelcomeWindow {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
+    public class Session {
+        private static String currentUsername;
+        private static int currentUserID;
+
+        public static String getCurrentUsername() {
+            return currentUsername;
+        }
+
+        public static void setCurrentUsername(String username) {
+            currentUsername = username;
+        }
+
+        public static void setCurrentUserID(int userID) {
+            currentUserID = userID;
+        }
+
+        public static int getCurrentUserID() {
+            return currentUserID;
+        }
+    }
+
+
 }
 
