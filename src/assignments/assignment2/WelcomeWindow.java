@@ -41,7 +41,9 @@ public class WelcomeWindow {
         JButton signupbtn = new JButton("Sign up");
         JButton loginbtn = new JButton("Log in");
         JButton leaderboard = new JButton("View Leaderboard");
+        JButton userscore = new JButton("User Progress");
 
+        buttonPanel.add(userscore);
         buttonPanel.add(leaderboard);
         buttonPanel.add(signupbtn);
         buttonPanel.add(loginbtn);
@@ -364,11 +366,11 @@ public class WelcomeWindow {
 
                         JLabel usernameLabel = new JLabel("Username: " + username);
                         JLabel winsLabel = new JLabel("Wins: " + wins);
-                        JLabel lossesLabel = new JLabel("Losses: " + losses);
+                        //JLabel lossesLabel = new JLabel("Losses: " + losses);
 
                         userPanel.add(usernameLabel);
                         userPanel.add(winsLabel);
-                        userPanel.add(lossesLabel);
+                        //userPanel.add(lossesLabel);
 
                         leaderboardPanel.add(userPanel);
                         leaderboardPanel.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -392,6 +394,92 @@ public class WelcomeWindow {
                 frame.revalidate();
                 frame.repaint();
 
+            }
+        });
+
+        userscore.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.getContentPane().removeAll();
+                frame.repaint();
+                frame.revalidate();
+
+                //int userID = WelcomeWindow.Session.getCurrentUserID();
+
+                JPanel userscore = new JPanel();
+                userscore.setLayout(new BoxLayout(userscore, BoxLayout.Y_AXIS));
+                userscore.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+                userscore.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+                try {
+                    int userID = WelcomeWindow.Session.getCurrentUserID();
+
+                    Connection conn = LogIn.getConnection();
+                    String sql = "SELECT us.UserWins, us.UserLosses, ui.Username " +
+                            "FROM userscore us " +
+                            "JOIN userinfo ui ON us.UserID = ui.UserID " +
+                            "WHERE us.UserID = ?";
+                    PreparedStatement stmt = conn.prepareStatement(sql);
+                    stmt.setInt(1, userID);
+                    ResultSet rs = stmt.executeQuery();
+
+                    if (userID == 0) {
+                        JDialog notlogin = new JDialog(frame, "Login failure", true);
+                        notlogin.setLayout(new BorderLayout());
+                        notlogin.setSize(300, 150);
+                        notlogin.setLocationRelativeTo(frame);
+
+                        JLabel messageLabel = new JLabel("You are not logged in", SwingConstants.CENTER);
+                        messageLabel.setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
+                        notlogin.add(messageLabel, BorderLayout.CENTER);
+
+                        JPanel buttonPanel = new JPanel();
+                        JButton mainMenuButton = new JButton("Main Menu");
+
+                        buttonPanel.add(mainMenuButton);
+                        notlogin.add(buttonPanel, BorderLayout.SOUTH);
+
+                        mainMenuButton.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent e) {
+                                notlogin.dispose();
+                                WelcomeWindow.showWelcomeWindow(frame);
+                            }
+                        });
+                        notlogin.setVisible(true);
+                    } else {
+                        JLabel title = new JLabel("User progress");
+                        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+                        userscore.add(title);
+                        userscore.add(Box.createRigidArea(new Dimension(0, 10)));
+
+                        while (rs.next()) {
+                            JPanel userPanel = new JPanel();
+                            userPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 5));
+
+                            String username = rs.getString("Username");
+                            int wins = rs.getInt("UserWins");
+                            int losses = rs.getInt("UserLosses");
+
+
+                            JLabel usernameLabel = new JLabel("Username: " + username);
+                            JLabel winsLabel = new JLabel("Wins: " + wins);
+                            JLabel lossesLabel = new JLabel("Losses: " + losses);
+
+                            userPanel.add(usernameLabel);
+                            userPanel.add(winsLabel);
+                            userPanel.add(lossesLabel);
+
+                            userscore.add(userPanel);
+                            userscore.add(Box.createRigidArea(new Dimension(0, 10)));
+                        }
+                    }
+
+                    frame.getContentPane().add(userscore);
+                    frame.revalidate();
+                    frame.repaint();
+
+                } catch ( SQLException se) {
+                    System.out.println(se.getMessage());
+                }
             }
         });
         entirePanel.add(centerPanel, gbc);

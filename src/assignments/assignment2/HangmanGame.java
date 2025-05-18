@@ -160,10 +160,19 @@ public class HangmanGame {
                                 JPanel buttonPanel = new JPanel();
                                 JButton playAgainButton = new JButton("Play Again");
                                 JButton mainMenuButton = new JButton("Main Menu");
+                                JButton logoutbtn = new JButton("Logout");
 
                                 buttonPanel.add(playAgainButton);
                                 buttonPanel.add(mainMenuButton);
+                                buttonPanel.add(logoutbtn);
                                 dialog.add(buttonPanel, BorderLayout.SOUTH);
+
+                                logoutbtn.addActionListener(new ActionListener() {
+                                    public void actionPerformed(ActionEvent e) {
+                                        System.exit(0);
+                                        centerPanel.add(logoutbtn);
+                                    }
+                                });
 
                                 playAgainButton.addActionListener(new ActionListener() {
                                     public void actionPerformed(ActionEvent e) {
@@ -213,10 +222,19 @@ public class HangmanGame {
                                     JPanel buttonPanel = new JPanel();
                                     JButton playAgainButton = new JButton("Play Again");
                                     JButton mainMenuButton = new JButton("Main Menu");
+                                    JButton logoutbtn = new JButton("Logout");
 
+                                    buttonPanel.add(logoutbtn);
                                     buttonPanel.add(playAgainButton);
                                     buttonPanel.add(mainMenuButton);
                                     dialog.add(buttonPanel, BorderLayout.SOUTH);
+
+                                    logoutbtn.addActionListener(new ActionListener() {
+                                        public void actionPerformed(ActionEvent e) {
+                                            System.exit(0);
+                                            centerPanel.add(logoutbtn);
+                                        }
+                                    });
 
                                     playAgainButton.addActionListener(new ActionListener() {
                                         public void actionPerformed(ActionEvent e) {

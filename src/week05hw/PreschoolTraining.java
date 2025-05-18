@@ -182,8 +182,7 @@ public class PreschoolTraining {
                         });
                         centerPanel.revalidate();
                         centerPanel.repaint();
-
-
+                        
                     }
                 });
             }
