@@ -9,10 +9,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Scanner;
 
 public class WelcomeWindow {
-    public static void showWelcomeWindow(JFrame frame) {
+    public static Component showWelcomeWindow(JFrame frame) {
         frame.getContentPane().removeAll();
         frame.repaint();
         frame.revalidate();
@@ -38,6 +37,7 @@ public class WelcomeWindow {
         centerPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 
         JPanel buttonPanel = new JPanel();
+
         JButton signupbtn = new JButton("Sign up");
         JButton loginbtn = new JButton("Log in");
         JButton leaderboard = new JButton("View Leaderboard");
@@ -54,27 +54,42 @@ public class WelcomeWindow {
                 frame.repaint();
                 frame.revalidate();
 
+                JPanel outerPanel = new JPanel();
+                outerPanel.setLayout(new GridBagLayout());
+
                 JPanel loginPanel = new JPanel();
                 loginPanel.setLayout(new BoxLayout(loginPanel, BoxLayout.Y_AXIS));
+                loginPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
                 loginPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 
                 JLabel usernameLabel = new JLabel("Username:");
+                usernameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
                 JTextField usernameField = new JTextField(20);
+                usernameField.setMaximumSize(new Dimension(200, 30));
+                usernameField.setAlignmentX(Component.CENTER_ALIGNMENT);
                 loginPanel.add(usernameLabel);
                 loginPanel.add(usernameField);
-                usernameField.setMaximumSize(new Dimension(200, 30));
                 loginPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-                usernameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
                 JLabel passwordLabel = new JLabel("Password:");
+                passwordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
                 JPasswordField passwordField = new JPasswordField(15);
+                passwordField.setMaximumSize(new Dimension(200, 30));
+                passwordField.setAlignmentX(Component.CENTER_ALIGNMENT);
                 loginPanel.add(passwordLabel);
                 loginPanel.add(passwordField);
-                passwordField.setMaximumSize(new Dimension(200, 30));
                 loginPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-                passwordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
                 JButton submitBtn = new JButton("Submit");
+                submitBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
                 loginPanel.add(submitBtn);
+
+                outerPanel.add(loginPanel);
+
+                frame.getContentPane().add(outerPanel);
+                frame.add(loginPanel);
+                frame.revalidate();
+                frame.repaint();
 
                 submitBtn.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
@@ -133,7 +148,7 @@ public class WelcomeWindow {
                                                 frame.revalidate();
 
                                                 JPanel gamePanel = new JPanel();
-                                                gamePanel.add(new JLabel("Game starts here!"));
+                                                gamePanel.add(HangmanGame.showHangmanGame(frame));
 
                                                 frame.add(gamePanel);
                                                 frame.revalidate();
@@ -171,29 +186,39 @@ public class WelcomeWindow {
                 frame.repaint();
                 frame.revalidate();
 
+                JPanel outerPanel = new JPanel();
+                outerPanel.setLayout(new GridBagLayout());
+
                 JPanel signupPanel = new JPanel();
                 signupPanel.setLayout(new BoxLayout(signupPanel, BoxLayout.Y_AXIS));
+                signupPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
                 signupPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 
                 JLabel usernameLabel = new JLabel("Username:");
+                usernameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
                 JTextField usernameField = new JTextField(20);
+                usernameField.setMaximumSize(new Dimension(200, 30));
+                usernameField.setAlignmentX(Component.CENTER_ALIGNMENT);
                 signupPanel.add(usernameLabel);
                 signupPanel.add(usernameField);
-                usernameField.setMaximumSize(new Dimension(200, 30));
                 signupPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-                usernameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
                 JLabel passwordLabel = new JLabel("Password:");
+                passwordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
                 JPasswordField passwordField = new JPasswordField(15);
+                passwordField.setMaximumSize(new Dimension(200, 30));
+                passwordField.setAlignmentX(Component.CENTER_ALIGNMENT);
                 signupPanel.add(passwordLabel);
                 signupPanel.add(passwordField);
-                passwordField.setMaximumSize(new Dimension(200, 30));
                 signupPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-                passwordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
                 JButton submitBtn = new JButton("Submit");
+                submitBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
                 signupPanel.add(submitBtn);
 
+                outerPanel.add(signupPanel);
+
+                frame.getContentPane().add(outerPanel);
                 frame.add(signupPanel);
                 frame.revalidate();
                 frame.repaint();
@@ -205,7 +230,6 @@ public class WelcomeWindow {
                         frame.revalidate();
                         String inputUsername = usernameField.getText();
                         try {
-
                             Connection conn = LogIn.getConnection();
                             String query = "SELECT UserPassword FROM userinfo WHERE Username = ?";
                             PreparedStatement q = conn.prepareStatement(query);
@@ -224,16 +248,6 @@ public class WelcomeWindow {
                                     ps.setString(2, UserPassword);
                                     ps.executeUpdate();
 
-                                    JDialog dialog = new JDialog(frame, "Sign up", true);
-                                    dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-
-                                    JPanel dialogPanel = new JPanel();
-                                    dialogPanel.setLayout(new BoxLayout(dialogPanel, BoxLayout.Y_AXIS));
-                                    dialogPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-
-                                    JLabel messageLabel = new JLabel("You're successfully signed up");
-                                    messageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-                                    dialogPanel.add(messageLabel);
 
                                     String querygetid = "SELECT UserID FROM userinfo WHERE Username = ?";
                                     PreparedStatement getidStmt = conn.prepareStatement(querygetid);
@@ -255,19 +269,23 @@ public class WelcomeWindow {
                                         q3.close();
                                     }
 
+                                    JDialog dialog = new JDialog(frame, "Sign up", true);
+                                    dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
+                                    JPanel dialogPanel = new JPanel();
+                                    dialogPanel.setLayout(new BoxLayout(dialogPanel, BoxLayout.Y_AXIS));
+                                    dialogPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
-                                    String query3 = "INSERT INTO userscore (UserWins, UserLosses, UserID) VALUES (0,0,?)";
-                                    PreparedStatement q3 = conn.prepareStatement(query3);
-                                    ps.setString(1, "0");
-                                    ps.setString(2, "0");
-                                    q3.executeUpdate();
+                                    JLabel messageLabel = new JLabel("You're successfully signed up");
+                                    messageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                                    dialogPanel.add(messageLabel);
 
                                     dialogPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
-                                    JButton continueButton = new JButton("Return to start page for log in");
+                                    JButton continueButton = new JButton("Back to main menu for log in");
                                     continueButton.setAlignmentX(Component.CENTER_ALIGNMENT);
                                     dialogPanel.add(continueButton);
+                                    dialogPanel.setVisible(true);
 
                                     continueButton.addActionListener(new ActionListener() {
                                         public void actionPerformed(ActionEvent e) {
@@ -278,7 +296,7 @@ public class WelcomeWindow {
                                             frame.revalidate();
 
                                             JPanel gamePanel = new JPanel();
-                                            gamePanel.add(new JLabel("Game starts here!"));
+                                            gamePanel.add(WelcomeWindow.showWelcomeWindow(frame));
 
                                             frame.getContentPane().removeAll();
                                             frame.add(gamePanel, BorderLayout.CENTER);
@@ -382,6 +400,7 @@ public class WelcomeWindow {
         frame.setSize(500, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+        return null;
     }
     public class Session {
         private static String currentUsername;

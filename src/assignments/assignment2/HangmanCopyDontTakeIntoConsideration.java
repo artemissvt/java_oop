@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-public class Hangman {
+public class HangmanCopyDontTakeIntoConsideration {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Hangman");
 
@@ -272,7 +272,7 @@ public class Hangman {
                                     JButton continueButton = new JButton("Back to main menu for log in");
                                     continueButton.setAlignmentX(Component.CENTER_ALIGNMENT);
                                     dialogPanel.add(continueButton);
-
+                                    dialogPanel.setVisible(true);
 
                                     continueButton.addActionListener(new ActionListener() {
                                         public void actionPerformed(ActionEvent e) {

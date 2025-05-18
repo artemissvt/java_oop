@@ -14,13 +14,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
 public class HangmanGame {
-    public static void showHangmanGame (JFrame frame) {
+    public static Component showHangmanGame (JFrame frame) {
         frame.getContentPane().removeAll();
         frame.repaint();
         frame.revalidate();
@@ -31,12 +30,13 @@ public class HangmanGame {
             Set<Character> correctLetters = new HashSet<>();
             int[] wrongGuessCount = {0};
             JPanel imagePanel = new JPanel();
+            imagePanel.setLayout(new BorderLayout());
+            imagePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
             JLabel imageLabel1 = new JLabel(new ImageIcon("hangman0.png"));
             imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.Y_AXIS));
             imagePanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 20));
-            imageLabel1.setAlignmentX(Component.CENTER_ALIGNMENT);
-            imagePanel.add(imageLabel1);
-
+            imagePanel.add(imageLabel1, BorderLayout.CENTER);
 
             URL url = new URL("https://random-word-api.vercel.app/api?words=1");
             InputStreamReader reader = new InputStreamReader(url.openStream());
@@ -46,6 +46,7 @@ public class HangmanGame {
 
             // creation of the panel that will contain the word of the game
             JPanel gamewordPanel = new JPanel();
+
             gamewordPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
             gamewordPanel.setBorder(BorderFactory.createEmptyBorder(100, 600, 25, 10));
 
@@ -57,9 +58,8 @@ public class HangmanGame {
             }
 
             JLabel gamewordLabel = new JLabel();
+            gamewordLabel.setFont(new Font("Arial", Font.BOLD, 40));
             updateDisplay(word, correctLetters, gamewordLabel);
-
-            gamewordPanel.setFont(new Font("Arial", Font.BOLD, 80));
             gamewordPanel.add(gamewordLabel);
 
             // creation of one panel that contains all of the others
@@ -84,6 +84,7 @@ public class HangmanGame {
             wrongPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
             wrongPanel.setBorder(BorderFactory.createEmptyBorder(20, 600, 25, 10));
             JLabel word2 = new JLabel("Wrong letters:");
+            word2.setFont(new Font("Arial", Font.BOLD, 25));
             wrongPanel.add(word2);
 
             // create a panel for wrong letters
@@ -99,6 +100,15 @@ public class HangmanGame {
             containerPanel.add(wrongPanel);
             containerPanel.add(wrongletters);
 
+            JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+            splitPane.setLeftComponent(imagePanel);
+            splitPane.setRightComponent(centerPanel);
+            splitPane.setRightComponent(containerPanel);
+            splitPane.setDividerSize(0);
+            splitPane.setEnabled(false);
+
+            splitPane.setDividerLocation(200);
+
             // display the letters
             for (String letter : letters) {
                 JButton b = new JButton(letter);
@@ -107,8 +117,11 @@ public class HangmanGame {
                     public void actionPerformed(ActionEvent e) {
                         char guessedChar = letter.charAt(0);
 
+
                         if (!word.contains(letter)) {
                             JLabel letterlabel = new JLabel(letter + " ");
+                            letterlabel.setFont(new Font("Arial", Font.BOLD, 20));
+
                             wrongletters.add(letterlabel);
                             wrongletters.repaint();
                             wrongletters.revalidate();
@@ -166,7 +179,6 @@ public class HangmanGame {
                                 });
 
                                 dialog.setVisible(true);
-                                // update score, play again option
                             }
 
                         } else {
@@ -177,7 +189,6 @@ public class HangmanGame {
                                 if (hasWon(word, correctLetters)) {
                                     try {
                                         int userID = WelcomeWindow.Session.getCurrentUserID();
-                                        System.out.println("Debug: Current User ID = " + userID);
 
                                         Connection conn = LogIn.getConnection();
                                         conn.setAutoCommit(true);
@@ -233,9 +244,11 @@ public class HangmanGame {
                 letterPanel.add(b);
             }
 
-            entirepanel.add(imagePanel, BorderLayout.WEST);
-            entirepanel.add(centerPanel, BorderLayout.CENTER);
-            entirepanel.add(containerPanel, BorderLayout.SOUTH);
+            entirepanel.add(splitPane, BorderLayout.CENTER);
+
+            //entirepanel.add(imagePanel, BorderLayout.WEST);
+            //entirepanel.add(centerPanel, BorderLayout.CENTER);
+            //entirepanel.add(containerPanel, BorderLayout.SOUTH);
             frame.add(entirepanel);
 
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -251,6 +264,7 @@ public class HangmanGame {
         }
 
 
+        return null;
     }
     public static void updateDisplay(String word, Set<Character> correctLetters, JLabel label) {
         StringBuilder display = new StringBuilder();
