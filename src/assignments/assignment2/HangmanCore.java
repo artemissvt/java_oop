@@ -2,7 +2,6 @@ package assignments.assignment2;
 import javax.swing.*;
 import java.awt.*;
 
-
 public class HangmanCore {
     public static void main(String[] args) {
 
@@ -32,6 +31,4 @@ public class HangmanCore {
         // display the show welcome window class
         WelcomeWindow.showWelcomeWindow(frame);
     }
-
-
 }

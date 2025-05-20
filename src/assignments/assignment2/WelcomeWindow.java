@@ -1,6 +1,5 @@
 package assignments.assignment2;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -95,7 +94,6 @@ public class WelcomeWindow {
                 JButton submitBtn = new JButton("Submit");
                 submitBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
                 loginPanel.add(submitBtn);
-
                 outerPanel.add(loginPanel);
 
                 // add the outer panel to frame, revalidate and repaint
@@ -107,7 +105,6 @@ public class WelcomeWindow {
                 // add action listener to the submit button
                 submitBtn.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-
                         // get username and password
                         String inputUsername = usernameField.getText();
                         String inputPassword = new String(passwordField.getPassword());
@@ -117,11 +114,9 @@ public class WelcomeWindow {
                         if (inputUsername.isEmpty() || inputPassword.isEmpty()) {
                             JOptionPane.showMessageDialog(null, "Please enter a valid username/password");
                         } else {
-
                             // in case everything is correct start the program
                             try {
                                 Connection conn = LogIn.getConnection();
-
                                 // get user password from the userinfo table created on the db
                                 String query = "SELECT UserPassword FROM userinfo WHERE Username = ?";
                                 PreparedStatement q = conn.prepareStatement(query);
@@ -129,10 +124,8 @@ public class WelcomeWindow {
                                 ResultSet rs = q.executeQuery();
 
                                 if (rs.next()) {
-
                                     // get the password from the db
                                     String dbPassword = rs.getString("UserPassword");
-
                                     // if the userpassword that the user inputted matches the userpassword that exists on the db
                                     // complete the login
 
@@ -147,7 +140,6 @@ public class WelcomeWindow {
                                         }
                                         idRs.close();
                                         idStmt.close();
-
 
                                         // create the pop up dialogue window
                                         JDialog dialog = new JDialog(frame, "Login", true);
@@ -207,14 +199,41 @@ public class WelcomeWindow {
                                         dialog.setLocationRelativeTo(frame);
                                         dialog.setVisible(true);
                                     } else {
-
                                         // if the password doesnt match then print wrong password
                                         JOptionPane.showMessageDialog(null, "Wrong password");
                                     }
                                 } else {
 
                                     // if the username doesnt match print user not found
-                                    JOptionPane.showMessageDialog(null, "User not found");
+                                    JDialog dialog = new JDialog(frame, "Fail", true);
+                                    dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+                                    // and the panel that will include the message
+                                    JPanel dialogPanel = new JPanel();
+                                    dialogPanel.setLayout(new BoxLayout(dialogPanel, BoxLayout.Y_AXIS));
+                                    dialogPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+                                    // print that the login failed
+                                    JLabel messageLabel = new JLabel("User not found - sign up");
+                                    messageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                                    dialogPanel.add(messageLabel);
+                                    dialogPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+                                    JButton returnbtn = new JButton("Return to main menu");
+                                    returnbtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+                                    dialogPanel.add(returnbtn);
+
+                                    returnbtn.addActionListener(new ActionListener() {
+                                        public void actionPerformed(ActionEvent e) {
+                                            frame.getContentPane().removeAll();
+                                            WelcomeWindow.showWelcomeWindow(frame);
+                                            dialog.dispose();
+                                        }
+                                    });
+                                    dialog.setContentPane(dialogPanel);
+                                    dialog.pack();
+                                    dialog.setLocationRelativeTo(frame); // center dialog
+                                    dialog.setVisible(true); //
                                 }
 
                             } catch (SQLException se) {
@@ -263,7 +282,7 @@ public class WelcomeWindow {
                 signupPanel.add(passwordField);
                 signupPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
-                JLabel confirmationpasswordLabel = new JLabel("Password:");
+                JLabel confirmationpasswordLabel = new JLabel("Confirm Password:");
                 confirmationpasswordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
                 JPasswordField confirmationpasswordField = new JPasswordField(15);
                 confirmationpasswordField.setMaximumSize(new Dimension(200, 30));
@@ -309,7 +328,6 @@ public class WelcomeWindow {
                                         ps.setString(2, UserPassword);
                                         ps.executeUpdate();
 
-
                                         String querygetid = "SELECT UserID FROM userinfo WHERE Username = ?";
                                         PreparedStatement getidStmt = conn.prepareStatement(querygetid);
                                         getidStmt.setString(1, Username);
@@ -351,7 +369,6 @@ public class WelcomeWindow {
                                         continueButton.addActionListener(new ActionListener() {
                                             public void actionPerformed(ActionEvent e) {
                                                 dialog.dispose();
-
                                                 frame.getContentPane().removeAll();
                                                 frame.repaint();
                                                 frame.revalidate();
@@ -578,7 +595,5 @@ public class WelcomeWindow {
             return currentUserID;
         }
     }
-
-
 }
 
