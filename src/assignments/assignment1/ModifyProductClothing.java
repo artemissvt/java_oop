@@ -16,7 +16,6 @@ public class ModifyProductClothing {
 
             File file = new File(filePath);
             Scanner scanner = new Scanner(file);
-
             boolean found = false;
 
             while (scanner.hasNextLine()) {

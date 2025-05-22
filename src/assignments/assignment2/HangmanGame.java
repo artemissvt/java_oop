@@ -106,7 +106,6 @@ public class HangmanGame {
             splitPane.setRightComponent(containerPanel);
             splitPane.setDividerSize(0);
             splitPane.setEnabled(false);
-
             splitPane.setDividerLocation(200);
 
             // display the letters
@@ -125,18 +124,14 @@ public class HangmanGame {
                             wrongletters.add(letterlabel);
                             wrongletters.repaint();
                             wrongletters.revalidate();
-
                             wrongGuessCount[0]++;
 
                             if (wrongGuessCount[0] <= 6) {
                                 imageLabel1.setIcon(new ImageIcon("hangman" + wrongGuessCount[0] + ".png"));
                             }
-
                             if (wrongGuessCount[0] == 6) {
-
                                 try {
                                     int userID = WelcomeWindow.Session.getCurrentUserID();
-
                                     Connection conn = LogIn.getConnection();
                                     conn.setAutoCommit(true);
 
@@ -250,23 +245,16 @@ public class HangmanGame {
                                     });
 
                                     dialog.setVisible(true);
-                                    // update score, play again option
                                 }
                             }
                         }
-
                         b.setEnabled(false);
                     }
                 });
-
                 letterPanel.add(b);
             }
-
             entirepanel.add(splitPane, BorderLayout.CENTER);
 
-            //entirepanel.add(imagePanel, BorderLayout.WEST);
-            //entirepanel.add(centerPanel, BorderLayout.CENTER);
-            //entirepanel.add(containerPanel, BorderLayout.SOUTH);
             frame.add(entirepanel);
 
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -280,8 +268,6 @@ public class HangmanGame {
         } catch (ParseException e) {
             System.out.println(e.getMessage());
         }
-
-
         return null;
     }
     public static void updateDisplay(String word, Set<Character> correctLetters, JLabel label) {
@@ -297,15 +283,6 @@ public class HangmanGame {
         label.setText(display.toString().trim());
     }
 
-    public static void disableAllButtons(JPanel panel) {
-        Component[] components = panel.getComponents();
-        for (Component c : components) {
-            if (c instanceof JButton) {
-                c.setEnabled(false);
-            }
-        }
-    }
-
     public static boolean hasWon(String word, Set<Character> correctLetters) {
         for (char c : word.toCharArray()) {
             if (!correctLetters.contains(c)) {
@@ -315,7 +292,7 @@ public class HangmanGame {
         return true;
     }
 
-
+    // just for testing
     public static void main(String[] args) {
         JFrame frame = new JFrame("Hangman Game");
         showHangmanGame(frame);

@@ -13,10 +13,8 @@ public class ModifyProductElectronics {
             Scanner input = new Scanner(System.in);
             List<String[]> allProducts = new ArrayList<>();
             List<String[]> electronicProducts = new ArrayList<>();
-
             File file = new File(filePath);
             Scanner scanner = new Scanner(file);
-
             boolean found = false;
 
             while (scanner.hasNextLine()) {
